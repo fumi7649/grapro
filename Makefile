@@ -14,9 +14,17 @@ uninstall-istio:
 apply-go-server:
 	kubectl apply -f ./application/manifest/server.yaml
 
+.PHONY: delete-go-server
+delete-go-server:
+	kubectl delete -f ./application/manifest/server.yaml
+
 .PHONY: apply-gateway
 apply-gateway:
 	kubectl apply -f ./application/manifest/istio-gateway.yaml
+
+.PHONY: delete-gateway
+delete-gateway:
+	kubectl delete -f ./application/manifest/istio-gateway.yaml
 
 .PHONY: create-cluster
 create-cluster:
@@ -26,6 +34,19 @@ create-cluster:
 build-image:
 	docker build ./application -t application-go:latest
 
+.PHONY: delete-image
+delete-image:
+	docker exec kind-control-plane crictl rmi application-go:latest
+
+
 .PHONY: push-image-to-kind
 push-image-to-kind:
 	kind load docker-image application-go:latest
+
+.PHONY: request-list
+request:
+	grpcurl -plaintext localhost:8080 list
+
+.PHONY: request-hello
+request-hello:
+	grpcurl -plaintext -d '{"name": "hsaki"}' localhost:8080 main.GreetingService.Hello
