@@ -1,0 +1,14 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  go:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./src/:/src
+    ports:
+      - 28080:8080
