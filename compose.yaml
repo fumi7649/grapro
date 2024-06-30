@@ -1,0 +1,23 @@
+# docker-compose.yml
+version: '3'
+services:
+  go:
+    build:
+      context: ./
+      dockerfile: ./application/Dockerfile
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./src/:/src
+    ports:
+      - 28080:8080
+    depends_on:
+      - otel-col
+  otel-col:
+    build:
+      context: ./oss/otel
+      dockerfile: ./Dockerfile
+    command: ["--config=/etc/otel-collector-config.yaml", ""]
+    ports:
+      - "4317:4317"
+

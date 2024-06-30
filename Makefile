@@ -30,8 +30,8 @@ delete-gateway:
 create-cluster:
 	kind create cluster --config cluster.yaml
 
-.PHONY: build-image
-build-image:
+.PHONY: build
+build:
 	docker build ./application -t application-go:latest
 
 .PHONY: delete-image

@@ -10,6 +10,7 @@ import (
 
 	hellopb "main/pkg/grpc"
 
+	
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -31,8 +32,15 @@ func (s *helloServer) Hello(ctx context.Context, req *hellopb.HelloRequest) (*he
 }
 
 
+func init() {
+	log.SetOutput(os.Stderr)
+    // ログのフォーマットを設定
+    log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds | log.Lshortfile)
+}
+
 func main() {
-	
+
+
 	port := 8080
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
